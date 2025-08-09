@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>خبزك واصل</title>
+    <style>
+        /* ... نفس التنسيقات السابقة ... */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #b1873e;
+            padding: 10px 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        nav a {
+            color: white;
+            margin-left: 15px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .btn-login, .btn-cart {
+            background-color: white;
+            border: 1px solid white;
+            color: #b1873e;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .btn-login:hover, .btn-cart:hover {
+            background-color: #f5e3c0;
+        }
+        .why-us {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .why-us h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #b1873e;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: white;
+            width: 250px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #b1873e;
+        }
+        .card p {
+            font-size: 14px;
+            color: #666;
+        }
+        .products {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .products h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #b1873e;
+        }
+        .product-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .product {
+            background: white;
+            width: 230px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            text-align: center;
+            padding-bottom: 15px;
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #b1873e;
+        }
+        .product p {
+            color: #666;
+            font-size: 14px;
+        }
+        .product button {
+            background-color: #b1873e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #d1a759;
+        }
+        footer {
+            background-color: #182034;
+            color: white;
+            padding: 20px 0 10px;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .footer-content div {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-content h4 {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #f5e3c0;
+        }
+        footer p {
+            margin-bottom: 5px;
+        }
+        footer .copyright {
+            margin-top: 15px;
+            text-align: center;font-size: 13px;
+            color: #999;
+        }
+        /* النوافذ المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 320px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        .close {
+            cursor: pointer;
+            color: red;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- إضافة سكريبت Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<header>
+    <div class="container header-content">
+        <div class="logo">خبزك واصل 🌾</div>
+        <nav>
+            <a href="#">الرئيسية</a>
+            <a href="#">المنتجات</a>
+            <a href="#">السلة</a>
+            <button class="btn-cart">🛒</button>
+            <button class="btn-login">تسجيل الدخول</button>
+        </nav>
+    </div>
+</header>
+
+<section class="why-us">
+    <h2>لماذا خبزك واصل؟</h2>
+    <div class="cards">
+        <div class="card">
+            <div class="icon">💰</div>
+            <h3>أسعار منافسة</h3>
+            <p>أفضل الأسعار مع أعلى جودة</p>
+        </div>
+        <div class="card">
+            <div class="icon">🚀</div>
+            <h3>توصيل سريع</h3>
+            <p>نصل إليك في أسرع وقت ممكن</p>
+        </div>
+        <div class="card">
+            <div class="icon">🍞</div>
+            <h3>طازج يومياً</h3>
+            <p>نخبز منتجاتنا يومياً بأجود المكونات</p>
+        </div>
+    </div>
+</section>
+
+<section class="products">
+    <h2>منتجاتنا</h2>
+    <div class="product-list">
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1608198093002-fba2f8b1e4f0" alt="خبز أبيض">
+            <h3>خبز أبيض</h3>
+            <p>2,000 دينار</p>
+            <button onclick="addToCart('خبز أبيض', 2000)">أضف للسلة</button>
+        </div>
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1609406113473-07b82d49f683" alt="خبز أسمر">
+            <h3>خبز أسمر</h3>
+            <p>2,500 دينار</p>
+            <button onclick="addToCart('خبز أسمر', 2500)">أضف للسلة</button>
+        </div>
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1604344766690-0b2d17a4a31b" alt="صمون">
+            <h3>صمون</h3>
+            <p>1,500 دينار</p>
+            <button onclick="addToCart('صمون', 1500)">أضف للسلة</button>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-content">
+        <div>
+            <h4>خبزك واصل</h4>
+            <p>أشهى المخبوزات الطازجة تصل لباب بيتك</p>
+        </div>
+        <div>
+            <h4>تواصل معنا</h4>
+            <p>07733925898</p>
+            <p>واتساب</p>
+            <p>Khobzak_wasel@</p>
+        </div>
+        <div>
+            <h4>ساعات العمل</h4>
+            <p>يومياً من 6:00 م إلى 10:00 م</p>
+        </div>
+    </div>
+    <p class="copyright">© 2025 خبزك واصل، جميع الحقوق محفوظة.</p>
+</footer>
+
+<!-- نافذة السلة -->
+<div class="modal" id="cartModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCart()">&times;</span>
+        <h3>سلة المشتريات</h3>
+        <div id="cartItems"></div>
+        <p id="cartTotal"></p>
+    </div>
+</div>
+
+<!-- نافذة تسجيل الدخول مع Google Sign-In -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeLogin()">&times;</span>
+        <h3>تسجيل الدخول</h3>
+        <!-- زر تسجيل الدخول من Google -->
+        <div id="g_id_onload"
+             data-client_id="YOUR_GOOGLE_CLIENT_ID"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="outline"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left">
+        </div>
+    </div>
+</div>
+
+<script>
+    let cart = [];
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        alert(name + " تمت إضافته للسلة!");
+    }
+
+    document.querySelector(".btn-cart").onclick = function() {
+        openCart();
+    };
+
+    document.querySelector(".btn-login").onclick = function() {
+        document.getElementById("loginModal").style.display = "flex";
+    };
+
+    function openCart() {
+        let cartItemsDiv = document.getElementById("cartItems");
+        cartItemsDiv.innerHTML = "";
+        let total = 0;
+        cart.forEach(item => {
+            cartItemsDiv.innerHTML += `<p>${item.name} - ${item.price} دينار</p>`;
+            total += item.price;
+        });
+        document.getElementById("cartTotal").innerText = "الإجمالي: " + total + " دينار";
+        document.getElementById("cartModal").style.display = "flex";
+    }
+
+    function closeCart() {
+        document.getElementById("cartModal").style.display = "none";
+    }
+
+    function closeLogin() {
+        document.getElementById("loginModal").style.display = "none";
+    }
+
+    // دالة لمعالجة تسجيل الدخول عبر Google
+    function handleCredentialResponse(response) {
+        // response.credential هو JWT token
+        // يمكن فك تشفيره لمعرفة بيانات المستخدم (بشكل مبسط هنا)
+        function parseJwt (token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        };
+
+        const userObject = parseJwt(response.credential);
+        alert("مرحباً " + userObject.name + "!\nتم تسجيل الدخول بنجاح باستخدام Google.");
+        closeLogin();
+    }
+</script>
+
+</body>
+</html>
